@@ -8,3 +8,5 @@ BUILD ORDER:
 
 01: glib2-ubuntu
 02: inputproto-ubuntu
+03: gtk3-ubuntu
+04: gtk2-ubuntu
