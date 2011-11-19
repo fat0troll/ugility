@@ -22,7 +22,7 @@ build() {
     done
 
     chmod +x autogen.sh
-    ./autogen.sh --prefix=/usr --sysconfdir=/etc --disable-static --with-xmlto --without-fop
+    ./autogen.sh --prefix=/usr --sysconfdir=/etc --libdir=/usr/lib${LIBDIRSUFFIX} --disable-static --with-xmlto --without-fop
     make
     cd "${srcdir}/libXi-${pkgver%.*}"
     make DESTDIR="${pkgdir}" install
