@@ -1,0 +1,41 @@
+--- configure.in.orig	2011-11-19 19:41:44.231846613 +0400
++++ configure.in	2011-11-19 19:41:51.150846366 +0400
+@@ -1703,16 +1703,6 @@
+ demos/gtk-demo/Makefile
+ demos/gtk-demo/geninclude.pl
+ tests/Makefile
+-docs/Makefile
+-docs/reference/Makefile
+-docs/reference/gdk/Makefile
+-docs/reference/gdk/version.xml
+-docs/reference/gtk/Makefile
+-docs/reference/gtk/version.xml
+-docs/reference/libgail-util/Makefile
+-docs/faq/Makefile
+-docs/tools/Makefile
+-docs/tutorial/Makefile
+ build/Makefile
+ build/win32/Makefile
+ build/win32/vs9/Makefile
+--- Makefile.in.orig	2011-11-19 19:34:15.000000000 +0400
++++ Makefile.in	2011-11-19 19:38:33.000000000 +0400
+@@ -461,7 +461,7 @@
+ 	&& DISPLAY=:$$XID && export DISPLAY
+ 
+ SRC_SUBDIRS = gdk gtk modules demos tests perf
+-SUBDIRS = po po-properties $(SRC_SUBDIRS) docs m4macros build
++SUBDIRS = po po-properties $(SRC_SUBDIRS) m4macros build
+ 
+ # require automake 1.4
+ AUTOMAKE_OPTIONS = 1.7
+--- Makefile.am.orig	2011-11-19 19:39:14.000000000 +0400
++++ Makefile.am	2011-11-19 19:39:28.000000000 +0400
+@@ -2,7 +2,7 @@
+ include $(top_srcdir)/Makefile.decl
+ 
+ SRC_SUBDIRS = gdk gtk modules demos tests perf
+-SUBDIRS = po po-properties $(SRC_SUBDIRS) docs m4macros build
++SUBDIRS = po po-properties $(SRC_SUBDIRS) m4macros build
+ 
+ # require automake 1.4
+ AUTOMAKE_OPTIONS = 1.7
