@@ -18,7 +18,7 @@ patch_opts=("")
 tags="x11-unity unity"
 
 #dependencies only needed to build package
-#build_deps="libindicator libdbusmenu gobject-introspection vala gtk-sharp-2 pygtk perl-XML-LibXML"
+build_deps="libindicator libdbusmenu gobject-introspection vala gtk-sharp-2 pygtk perl-XML-LibXML"
 
 provides=""
 conflicts=""
