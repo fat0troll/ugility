@@ -25,7 +25,7 @@ tags="unity dev-libs"
 #dependencies only needed to build package
 build_deps=""
 
-provides=""
+provides="glib2"
 conflicts=""
 
 adddep=""
