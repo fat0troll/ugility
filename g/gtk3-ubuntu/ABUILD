@@ -22,7 +22,7 @@ patch_opts=("")
 tags="unity x11-libs"
 
 #dependencies only needed to build package
-build_deps=""
+build_deps="colord"
 
 provides="gtk+3"
 conflicts=""
@@ -60,6 +60,8 @@ before_build()
         mv debian/patches/$i $patchdir/
     done
     set +e
+    go_src_dir
+    burn_patches
 }
 
 BUILD_SYSTEM="autotools"
