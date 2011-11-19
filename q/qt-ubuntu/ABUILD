@@ -1,0 +1,173 @@
+#ABUILD created by/создан: NomerUNO, uno.kms at gmail.com 
+#----------------------------- General vars --------------------------------------
+#------------------------- Основные переменные -----------------------------------
+pkgname=qt-ubuntu
+_ubuntu_ver=0ubuntu8
+pkgver=4.7.4.${_ubuntu_ver}
+pkgbuild=1
+arch=('auto')
+
+shortdesc="a multi-platform C++ graphical user interface toolkit with ubuntu patchset"
+
+source=("ftp://ftp.qt.nokia.com/qt/source/qt-everywhere-opensource-src-${pkgver%.*}.tar.gz"
+		"http://archive.ubuntu.com/ubuntu/pool/main/q/qt4-x11/qt4-x11_${pkgver%.*}-${_ubuntu_ver}.debian.tar.gz")
+
+patch_opts=("")
+
+#----------------------------- AgiliaLinux vars --------------------------------------
+#--------------------- Специфичные для AgiliaLinux ------------------------------
+#short and long tags / длинный и короткий тег
+tags="x11-libs unity"
+
+#dependencies only needed to build package
+build_deps="libtiff libpng libmng sqlite ca-certificates glib2-ubuntu dbus fontconfig libgl libsm libXrandr libXv libXi-ubuntu alsa-lib xdg-utils hicolor-icon-theme desktop-file-utils mesa postgresql mysql unixodbc cups gtk+2"
+
+provides="qt"
+conflicts=""
+
+adddep=""
+removedep=""
+
+#for multi pkg abuild
+pkglist=
+
+#Set number of jobs while compliling, otherwise it'll be autodetected
+#numjobs=1
+
+#additional files should be copied into ${pkgdir}/usr/doc/${pkgname}-${pkgver} dir from sources
+docs=
+gendeps_blacklist=
+
+#custom_opts: skip_validate skip_gendeps no_postperm no_strip no_ccache
+custom_opts=""
+
+#----------------------------- Make PKG --------------------------------------
+#-------------------------- Сборка пакета ------------------------------------
+
+build()
+{
+cd "${srcdir}/qt-everywhere-opensource-src-${pkgver%.*}"
+
+burn_patches
+unset QMAKESPEC
+export QT4DIR="${srcdir}/qt-everywhere-opensource-src-${pkgver%.*}"
+export PATH=${QT4DIR}/bin:${PATH}
+export LD_LIBRARY_PATH=${QT4DIR}/lib:${LD_LIBRARY_PATH}
+
+# FS#24601
+export CXXFLAGS="${CXXFLAGS} -fno-strict-aliasing"
+
+#Apply Ubuntu patches
+#Patches that don't apply to Arch Linux
+#This patch determines the CPU architecture with dpkg (Debian's package manager)
+#It will fail with an unknown architecture error in Arch Linux.
+sed -i '/07_trust_dpkg-arch_over_uname-m.diff/d' "${srcdir}/debian/patches/series"
+#ARM v6 entry for previous patch (dependent on it)
+sed -i '/94_armv6_uname_entry.diff/d' "${srcdir}/debian/patches/series"
+#Multiarch
+sed -i '/qt-multiarch-plugin-path-compat.diff/d' "${srcdir}/debian/patches/series"
+#No need to append "-qt4" to tools to separate from qt3 since Arch Linux installs qt3 to another prefix (/opt)
+sed -i '/01_debian_append_qt4_suffix.diff/d' "${srcdir}/debian/patches/series"
+#kubuntu_17_enable_qtwebkit_for_qtassistant.diff depends on that patch, so we
+#  fix the patch so that it applies correctly
+sed -i 's/\-qt4//g' "${srcdir}/debian/patches/kubuntu_17_enable_qtwebkit_for_qtassistant.diff"
+
+for i in $(cat "${srcdir}/debian/patches/series" | grep -v '#'); do
+  patch -Np1 -i "${srcdir}/debian/patches/${i}"
+done
+
+#Already done by Ubuntu
+#patch -Np1 -i "${srcdir}"/blacklist-diginotar-certs.diff
+
+#Build fix
+cp src/declarative/accessible/qdeclarativeaccessible_p.h include/QtDeclarative/private/
+
+sed -i "s|-O2|${CXXFLAGS}|" mkspecs/common/g++.conf
+sed -i "/^QMAKE_RPATH/s| -Wl,-rpath,||g" mkspecs/common/g++.conf
+sed -i "/^QMAKE_LFLAGS\s/s|+=|+= ${LDFLAGS}|g" mkspecs/common/g++.conf
+
+./configure \
+-confirm-license \
+-opensource \
+-prefix /usr \
+-docdir /usr/share/doc/qt \
+-plugindir /usr/lib${LIBDIRSUFFIX}/qt/plugins \
+-importdir /usr/lib${LIBDIRSUFFIX}/qt/imports \
+-datadir /usr/share/qt \
+-translationdir /usr/share/qt/translations \
+-sysconfdir /etc \
+-examplesdir /usr/share/doc/qt/examples \
+-demosdir /usr/share/doc/qt/demos \
+-largefile \
+-plugin-sql-{psql,mysql,sqlite,odbc} \
+-system-sqlite \
+-xmlpatterns \
+-no-phonon \
+-no-phonon-backend \
+-svg \
+-webkit \
+-script \
+-scripttools \
+-system-zlib \
+-system-libtiff \
+-system-libpng \
+-system-libmng \
+-system-libjpeg \
+-nomake demos \
+-nomake examples \
+-nomake docs \
+-no-rpath \
+-openssl-linked \
+-v \
+-optimized-qmake \
+-dbus \
+-reduce-relocations \
+-no-separate-debug-info \
+-gtkstyle \
+-opengl \
+-no-openvg \
+-glib
+
+make
+make INSTALL_ROOT="${pkgdir}" install
+
+}
+
+
+#ran after function build() 
+#после сборки
+after_build()
+{
+# install missing icons and desktop files
+for icon in tools/linguist/linguist/images/icons/linguist-*-32.png ; do
+  size=$(echo $(basename ${icon}) | cut -d- -f2)
+  install -p -D -m644 ${icon} "${pkgdir}"/usr/share/icons/hicolor/${size}x${size}/apps/linguist.png
+done
+
+install -p -D -m644 src/gui/dialogs/images/qtlogo-64.png "${pkgdir}"/usr/share/icons/hicolor/64x64/apps/qtlogo.png
+install -p -D -m644 tools/assistant/tools/assistant/images/assistant.png "${pkgdir}"/usr/share/icons/hicolor/32x32/apps/assistant.png
+install -p -D -m644 tools/designer/src/designer/images/designer.png "${pkgdir}"/usr/share/icons/hicolor/128x128/apps/designer.png
+
+# install license addition
+install -D -m644 LGPL_EXCEPTION.txt "${pkgdir}"/usr/share/licenses/qt/LGPL_EXCEPTION.txt
+
+# Fix wrong path in pkgconfig files
+find "${pkgdir}"/usr/lib${LIBDIRSUFFIX}/pkgconfig -type f -name '*.pc' \
+-exec perl -pi -e "s, -L${srcdir}/?\S+,,g" {} \;
+# Fix wrong path in prl files
+find ${pkgdir}/usr/lib -type f -name '*.prl' \
+-exec sed -i -e '/^QMAKE_PRL_BUILD_DIR/d;s/\(QMAKE_PRL_LIBS =\).*/\1/' {} \;
+
+#Qt private headers for development with Ubuntu's patches
+install -d "${pkgdir}"/usr/include/{QtCore,QtDeclarative,QtGui,QtScript}
+install -d "${pkgdir}"/usr/src/{corelib,declarative,gui,script}
+    
+for i in QtCore QtDeclarative QtGui QtScript; do
+  cp -r "${srcdir}"/qt-everywhere-opensource-src-${pkgver%.*}/include/${i}/private/ \
+  "${pkgdir}"/usr/include/${i}/
+done
+
+for i in corelib declarative gui script; do
+  cp -r "${srcdir}"/qt-everywhere-opensource-src-${pkgver%.*}/src/${i} "${pkgdir}"/usr/src/
+done
+}
