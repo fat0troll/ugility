@@ -3,3 +3,8 @@ Ugility — Unity for AgiliaLinux!
 Here is store for Unity ABUILDs. You can use it without any warranty ;)
 
 Authors: NomerUNO (uno.kms at gmail dot com), fat0troll (fat0troll at riseup dot net), pztrn (pztrn at pztrn dot ru).
+
+BUILD ORDER:
+
+01: glib2-ubuntu
+02: inputproto-ubuntu
