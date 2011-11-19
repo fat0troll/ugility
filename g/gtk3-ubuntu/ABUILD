@@ -64,7 +64,7 @@ before_build()
 
 BUILD_SYSTEM="autotools"
 
-BUILD_WORD="LDFLAGS=\"$SLKLDFLAGS\" CFLAGS=\"$SLKCFLAGS\" CXXFLAGS=\"$SLKCFLAGS\" ./configure"
+BUILD_WORD="LDFLAGS=\"$SLKLDFLAGS\" CFLAGS=\"$SLKCFLAGS\" CXXFLAGS=\"$SLKCFLAGS\" ./autogen.sh"
 
 BUILD_KEYS="--prefix=/usr \
 --sysconfdir=/etc \
