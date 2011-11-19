@@ -1,0 +1,96 @@
+#ABUILD created by/создан: fat0troll, fat0troll at riseup.net 
+#----------------------------- General vars --------------------------------------
+#------------------------- Основные переменные -----------------------------------
+pkgname=glib2-ubuntu
+ubuntu_rel=0ubuntu4
+ubuntu_ver=2.30.0
+pkgver=2.30.1.${ubuntu_rel}
+pkgbuild=1
+arch=('auto')
+
+shortdesc="Common C routines used by GTK+ and other libs. Ubuntu-patched."
+#longdesc=(""
+#)
+
+source=("http://ftp.gnome.org/pub/GNOME/sources/glib/${pkgver%.*.*}/glib-${pkgver%.*}.tar.xz"
+"http://archive.ubuntu.com/ubuntu/pool/main/g/glib2.0/glib2.0_${ubuntu_ver}-${ubuntu_rel}.debian.tar.gz n")
+
+patch_opts=("")
+
+#----------------------------- AgiliaLinux vars --------------------------------------
+#--------------------- Специфичные для AgiliaLinux ------------------------------
+#short and long tags / длинный и короткий тег
+tags="unity dev-libs"
+
+#dependencies only needed to build package
+build_deps=""
+
+provides=""
+conflicts=""
+
+adddep=""
+removedep=""
+
+#for multi pkg abuild
+pkglist=
+
+#Set number of jobs while compliling, otherwise it'll be autodetected
+#numjobs=1
+
+#additional files should be copied into ${pkgdir}/usr/doc/${pkgname}-${pkgver} dir from sources
+docs=
+gendeps_blacklist=
+
+#custom_opts: skip_validate skip_gendeps no_postperm no_strip no_ccache
+custom_opts=""
+
+#----------------------------- Make PKG --------------------------------------
+#-------------------------- Сборка пакета ------------------------------------
+
+#ran before function build()
+#запускается перед сборкой.
+before_build()
+{
+    set -e
+    cd $srcdir
+    mkdir patch-prep
+    cd patch-prep
+    tar xf $srcache/${loc_source_arr[1]}
+    # Removing unneeded
+    sed -i '/gio-modules-multiarch-compat.patch/d' "debian/patches/series"
+    sed -i '/10_gvariant_check_null.patch/d' "debian/patches/series"
+    patchlist="`cat debian/patches/series | grep -v '#'`"
+    for i in ${patchlist}; do
+        mv debian/patches/$i $patchdir/
+    done
+    set +e
+}
+
+build()
+{
+    set -e
+    go_src_dir
+    burn_patches
+    ./configure \
+    --prefix=/usr \
+    --sysconfdir=/etc \
+    --libdir=/usr/lib$LIBDIRSUFFIX \
+    --with-pcre=system \
+    --disable-fam
+    make
+    set +e
+}
+
+
+#ran after function build() 
+#после сборки
+after_build()
+{
+    set -e
+    go_src_dir
+    make DESTDIR=${pkgdir} install
+    install -d "${pkgdir}/etc/profile.d"
+    install -m755 "${filedir}/glib2.sh" "${pkgdir}/etc/profile.d/"
+    install -m755 "${filedir}/glib2.csh" "${pkgdir}/etc/profile.d/"
+    set +e
+}
