@@ -19,7 +19,7 @@ build() {
     set -e
     autoreconf
 
-    ./configure --prefix=/usr
+    ./configure --prefix=/usr --libdir=/usr/lib${LIBDIRSUFFIX}
     make
     cd "${srcdir}/${pkgname%-*}-${pkgver%.*}"
     make DESTDIR="${pkgdir}" install
