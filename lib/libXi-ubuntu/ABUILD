@@ -1,0 +1,34 @@
+pkgname=libXi-ubuntu
+_ubuntu_ver=3ubuntu1
+pkgver=1.4.3.${_ubuntu_ver}
+pkgbuild=1
+shortdesc="X11 Input extension library"
+arch='auto'
+#depends='libxext inputproto-ubuntu'
+makedepends='pkg-config'
+provides='libXi'
+source=("http://xorg.freedesktop.org/releases/individual/lib/libXi-${pkgver%.*}.tar.bz2"
+        "http://archive.ubuntu.com/ubuntu/pool/main/libx/libxi/libxi_${pkgver%.*}-${_ubuntu_ver}.diff.gz")
+tags='xserver x11-libs'
+
+build() {
+    cd "${srcdir}/libXi-${pkgver%.*}"
+
+    cp ${srcache}/libxi_${pkgver%.*}-${_ubuntu_ver}.diff $srcdir
+    #Apply Ubuntu patches
+    patch -Np1 -i "${srcdir}/libxi_${pkgver%.*}-${_ubuntu_ver}.diff"
+    for i in $(cat "debian/patches/series" | grep -v '#'); do
+        patch -Np1 -i "debian/patches/${i}"
+    done
+
+    chmod +x autogen.sh
+    ./autogen.sh --prefix=/usr --sysconfdir=/etc --disable-static --with-xmlto --without-fop
+    make
+    cd "${srcdir}/libXi-${pkgver%.*}"
+    make DESTDIR="${pkgdir}" install
+
+    install -m755 -d "${pkgdir}/usr/share/licenses/${pkgname}"
+    install -m644 COPYING "${pkgdir}/usr/share/licenses/${pkgname}/"
+}
+
+

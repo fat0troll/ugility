@@ -1,0 +1,30 @@
+pkgname=inputproto-ubuntu
+_ubuntu_ver=2ubuntu1
+pkgver=2.0.2.${_ubuntu_ver}
+pkgbuild=1
+shortdesc="X11 Input extension wire protocol"
+arch='auto'
+provides='inputproto'
+source=("http://xorg.freedesktop.org/releases/individual/proto/${pkgname%-*}-${pkgver%.*}.tar.bz2"
+        "http://archive.ubuntu.com/ubuntu/pool/main/x/x11proto-input/x11proto-input_${pkgver%.*}-${_ubuntu_ver}.diff.gz")
+tags="xserver x11-protos"
+
+build() {
+    cd "${srcdir}/${pkgname%-*}-${pkgver%.*}"
+
+    # Apply ubuntu patches
+    cp ${srcache}/x11proto-input_${pkgver%.*}-${_ubuntu_ver}.diff $srcdir
+    patch -Np1 -i "${srcdir}/x11proto-input_${pkgver%.*}-${_ubuntu_ver}.diff"
+
+    set -e
+    autoreconf
+
+    ./configure --prefix=/usr
+    make
+    cd "${srcdir}/${pkgname%-*}-${pkgver%.*}"
+    make DESTDIR="${pkgdir}" install
+
+    install -m755 -d "${pkgdir}/usr/share/licenses/${pkgname%-*}"
+    install -m644 COPYING "${pkgdir}/usr/share/licenses/${pkgname%-*}/"
+    set +e
+}
