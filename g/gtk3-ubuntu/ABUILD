@@ -24,7 +24,7 @@ tags="unity x11-libs"
 #dependencies only needed to build package
 build_deps=""
 
-provides=""
+provides="gtk+3"
 conflicts=""
 
 adddep=""
