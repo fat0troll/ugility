@@ -131,13 +131,6 @@ sed -i "/^QMAKE_LFLAGS\s/s|+=|+= ${LDFLAGS}|g" mkspecs/common/g++.conf
 make
 make INSTALL_ROOT="${pkgdir}" install
 
-}
-
-
-#ran after function build() 
-#после сборки
-after_build()
-{
 # install missing icons and desktop files
 for icon in tools/linguist/linguist/images/icons/linguist-*-32.png ; do
   size=$(echo $(basename ${icon}) | cut -d- -f2)
@@ -150,7 +143,13 @@ install -p -D -m644 tools/designer/src/designer/images/designer.png "${pkgdir}"/
 
 # install license addition
 install -D -m644 LGPL_EXCEPTION.txt "${pkgdir}"/usr/share/licenses/qt/LGPL_EXCEPTION.txt
+}
 
+
+#ran after function build() 
+#после сборки
+after_build()
+{
 # Fix wrong path in pkgconfig files
 find "${pkgdir}"/usr/lib${LIBDIRSUFFIX}/pkgconfig -type f -name '*.pc' \
 -exec perl -pi -e "s, -L${srcdir}/?\S+,,g" {} \;
