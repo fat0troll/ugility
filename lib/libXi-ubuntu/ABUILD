@@ -12,6 +12,7 @@ source=("http://xorg.freedesktop.org/releases/individual/lib/libXi-${pkgver%.*}.
 tags='xserver x11-libs'
 
 build() {
+    go_src_dir
     cd "${srcdir}/libXi-${pkgver%.*}"
 
     cp ${srcache}/libxi_${pkgver%.*}-${_ubuntu_ver}.diff $srcdir
@@ -20,9 +21,10 @@ build() {
     for i in $(cat "debian/patches/series" | grep -v '#'); do
         patch -Np1 -i "debian/patches/${i}"
     done
+    burn_patches
 
-    chmod +x autogen.sh
-    ./autogen.sh --prefix=/usr --sysconfdir=/etc --libdir=/usr/lib${LIBDIRSUFFIX} --disable-static --with-xmlto --without-fop
+    autoreconf -v --install
+    ./configure --enable-maintainer-mode "$@" --prefix=/usr --sysconfdir=/etc --libdir=/usr/lib${LIBDIRSUFFIX} --disable-static --with-xmlto --without-fop
     make
     cd "${srcdir}/libXi-${pkgver%.*}"
     make DESTDIR="${pkgdir}" install
