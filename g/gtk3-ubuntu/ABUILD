@@ -61,6 +61,7 @@ before_build()
     done
     set +e
     go_src_dir
+    burn_patches
 }
 
 BUILD_SYSTEM="autotools"
