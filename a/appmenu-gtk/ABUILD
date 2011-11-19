@@ -1,0 +1,40 @@
+pkgbase=appmenu-gtk
+pkgver=0.3.0
+pkgbuild=1
+arch='auto'
+build_deps='gnome-common gtk2-ubuntu gtk3-ubuntu libdbusmenu-gtk2 libdbusmenu-gtk3'
+source=("http://launchpad.net/appmenu-gtk/0.3/${pkgver}/+download/${pkgbase}-${pkgver}.tar.gz")
+pkglist='appmenu-gtk2 appmenu-gtk3'
+
+appmenu-gtk2() {
+    pkgname="appmenu-gtk2"
+    shortdesc="Appmenu support for GTK+2 apps"
+    tags="unity x11-unity"
+}
+
+appmenu-gtk3() {
+    pkgname="appmenu-gtk3"
+    shortdesc="Appmenu support for GTK+3 apps"
+    tags="unity x11-unity"
+}
+
+appmenu-gtk2_prep() {
+    cd $srcdir
+    mkdir build-gtk2
+    cd build-gtk2
+    ../configure --prefix=/usr --sysconfdir=/etc --with-gtk2 --disable-static
+
+    make DESTDIR="${pkgdir}/" install
+    install -Dm755 "${pkgdir}/etc/X11/Xsession.d/80appmenu" "${pkgdir}/etc/X11/xinit/xinitrc.d/80appmenu"
+    rm -rvf "${pkgdir}/etc/X11/Xsession.d"
+}
+
+appmenu-gtk3_prep() {
+    cd $srcdir
+    mkdir build-gtk3
+    cd build-gtk3
+    ../configure --prefix=/usr --sysconfdir=/etc --with-gtk3 --disable-static
+    make DESTDIR="${pkgdir}/" install
+    install -Dm755 "${pkgdir}/etc/X11/Xsession.d/80appmenu-gtk3" "${pkgdir}/etc/X11/xinit/xinitrc.d/80appmenu-gtk3"
+    rm -rvf "${pkgdir}/etc/X11/Xsession.d"
+}
