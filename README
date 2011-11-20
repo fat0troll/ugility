@@ -35,6 +35,7 @@ python-geoclue                 -> Geoclue Python module
 python-xapian                  -> Python bindings for Xapian
 zeitgeist-extensions           -> Extensions for Zeitgeist
 indicator-applet               -> GNOME panel indicator applet
+indicator-application          -> Takes menus and puts then in the panel
 
 BUILD ORDER:
 

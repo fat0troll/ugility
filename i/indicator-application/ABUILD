@@ -1,0 +1,30 @@
+#ABUILD created by/создан: NomerUNO, uno.kms at gmail.com 
+#----------------------------- General vars --------------------------------------
+#------------------------- Основные переменные -----------------------------------
+pkgname=indicator-application
+pkgver=0.4.0
+pkgbuild=1
+arch=('auto')
+
+shortdesc="A library and indicator to take menus from applications and place them in the panel"
+
+source=("http://launchpad.net/${pkgname}/${pkgver%.*}/${pkgver}/+download/${pkgname}-${pkgver}.tar.gz")
+
+patch_opts=("")
+
+tags="gnome-extra unity"
+
+BUILD_SYSTEM="autotools"
+
+BUILD_WORD="LDFLAGS=\"$SLKLDFLAGS\" CFLAGS=\"$SLKCFLAGS\" CXXFLAGS=\"$SLKCFLAGS\" ./configure"
+
+BUILD_KEYS="--prefix=/usr \
+--sysconfdir=/etc \
+--localstatedir=/var \
+--libdir=/usr/lib${LIBDIRSUFFIX} \
+--disable-static \
+--mandir=/usr/man \
+--libexecdir=/usr/share/${pkgname}"
+
+INSTALL_KEYS="DESTDIR=$pkgdir"
+
