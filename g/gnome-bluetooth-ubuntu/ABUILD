@@ -1,0 +1,63 @@
+#ABUILD created by/создан: fat0troll, fat0troll at riseup.net 
+#----------------------------- General vars --------------------------------------
+#------------------------- Основные переменные -----------------------------------
+pkgname=gnome-bluetooth-ubuntu
+_ubuntu_ver=3.2.0
+_ubuntu_rel=0ubuntu2
+pkgver=3.2.1.${_ubuntu_rel}
+pkgbuild=1
+arch=('auto')
+
+shortdesc="The GNOME Bluetooth Subsystem"
+source=("http://ftp.gnome.org/pub/GNOME/sources/${pkgname%-*}/${pkgver%.*.*}/${pkgname%-*}-${pkgver%.*}.tar.xz"
+        "http://archive.ubuntu.com/ubuntu/pool/main/g/${pkgname%-*}/${pkgname%-*}_${_ubuntu_ver}-${_ubuntu_rel}.debian.tar.gz")
+        
+patch_opts=("")
+tags="unity gnome-extra"
+build_deps="intltool gnome-doc-utils nautilus-sendto gobject-introspection"
+provides="gnome-bluetooth"
+adddep="obexd"
+
+before_build()
+{
+cd ${srcdir}/${pkgname%-*}-${pkgver%.*}
+
+#Apply Ubuntu patches
+for i in $(cat "${srcdir}/debian/patches/series" | grep -v '#'); do
+  patch -Np1 -i "${srcdir}/debian/patches/${i}"
+done
+
+autoreconf -fi
+}
+
+BUILD_SYSTEM="autotools"
+
+BUILD_WORD="LDFLAGS=\"$SLKLDFLAGS\" CFLAGS=\"$SLKCFLAGS\" CXXFLAGS=\"$SLKCFLAGS\" cd ${srcdir}/${pkgname%-*}-${pkgver%.*} && ./configure"
+
+BUILD_KEYS="--prefix=/usr \
+--sysconfdir=/etc \
+--localstatedir=/var \
+--libdir=/usr/lib${LIBDIRSUFFIX} \
+--disable-static \
+--mandir=/usr/man \
+--program-prefix= \
+--program-suffix= \
+--disable-scrollkeeper \
+--disable-doc \
+--disable-desktop-update \
+--disable-schemas-compile \
+--disable-introspection"
+
+INSTALL_KEYS="DESTDIR=$pkgdir"
+
+after_build()
+{
+cd ${srcdir}/${pkgname%-*}-${pkgver%.*}
+
+install -m644 -D "${filedir}/61-gnome-bluetooth-rfkill.rules" \
+	"${pkgdir}/lib/udev/rules.d//61-gnome-bluetooth-rfkill.rules"
+install -dm755 "${pkgdir}/etc/ld.so.conf.d/"
+echo "/usr/lib/gnome-bluetooth" > "${pkgdir}/etc/ld.so.conf.d/${pkgname%-*}.conf"
+install -dm755 "${pkgdir}/etc/xdg/autostart/"
+install -m644 "${srcdir}/debian/bluetooth-applet-unity.desktop" "${pkgdir}/etc/xdg/autostart/"
+}
