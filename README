@@ -44,6 +44,7 @@ indicator-session              -> Indicator to manage session
 indicator-sound                -> A unified sound menu
 network-manager-applet-ubuntu  -> Network Manager applet with indicator support
 gnome-bluetooth-ubuntu         -> Gnome bluetooth applet with indicator support
+nux                            -> An OpenGL toolkit
 
 BUILD ORDER:
 
