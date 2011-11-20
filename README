@@ -25,6 +25,7 @@ libqtdee                       -> Qt binding and QML plugin for Dee
 libqtgconf                     -> Qt bindings for GConf
 dconf-qt                       -> Qt bindings for DConf
 sni-qt                         -> Turns Qt tray icons into appindicators
+ido                            -> Widgets and objects used for indicators
 
 BUILD ORDER:
 
