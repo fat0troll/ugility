@@ -37,6 +37,7 @@ zeitgeist-extensions           -> Extensions for Zeitgeist
 indicator-applet               -> GNOME panel indicator applet
 indicator-application          -> Takes menus and puts then in the panel
 indicator-appmenu              -> An indicator to host the menus from apps
+indicator-datetime             -> A very, very simple clock
 
 BUILD ORDER:
 
