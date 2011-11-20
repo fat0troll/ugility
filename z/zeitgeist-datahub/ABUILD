@@ -1,0 +1,30 @@
+#ABUILD created by/создан: NomerUNO, uno.kms at gmail.com 
+#----------------------------- General vars --------------------------------------
+#------------------------- Основные переменные -----------------------------------
+pkgname=zeitgeist-datahub
+pkgver=0.7.0
+pkgbuild=1
+arch=('auto')
+
+shortdesc="The datahub provides passive plugins which insert events into Zeitgeist"
+source=("http://launchpad.net/${pkgname}/${pkgver%.*}/${pkgver}/+download/${pkgname}-${pkgver}.tar.gz")
+patch_opts=("")
+
+tags="gnome-extra unity"
+
+#dependencies only needed to build package
+build_deps="intltool vala"
+
+BUILD_SYSTEM="autotools"
+
+BUILD_WORD="LDFLAGS=\"$SLKLDFLAGS\" CFLAGS=\"$SLKCFLAGS\" CXXFLAGS=\"$SLKCFLAGS\" ./configure"
+
+BUILD_KEYS="--prefix=/usr \
+--sysconfdir=/etc \
+--localstatedir=/var \
+--libdir=/usr/lib${LIBDIRSUFFIX} \
+--disable-static \
+--mandir=/usr/man"
+
+INSTALL_KEYS="DESTDIR=$pkgdir"
+

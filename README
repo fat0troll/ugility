@@ -28,6 +28,7 @@ sni-qt                         -> Turns Qt tray icons into appindicators
 ido                            -> Widgets and objects used for indicators
 libzeitgeist                   -> Client library to interact with Zeitgeist
 python-rdflib                  -> A language for representing information
+zeitgeist-datahub              -> Plugins that insert events into Zeitgeist
 
 BUILD ORDER:
 
