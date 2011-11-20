@@ -21,6 +21,7 @@ appmenu-qt                     -> Application menu support for QT
 bamf                           -> Application matching framework
 libqtbamf                      -> Qt bindings for bamf
 dee                            -> Create Model-View-Controller apps over DBus
+libqtdee                       -> Qt binding and QML plugin for Dee
 
 BUILD ORDER:
 
