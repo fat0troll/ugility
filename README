@@ -27,6 +27,7 @@ dconf-qt                       -> Qt bindings for DConf
 sni-qt                         -> Turns Qt tray icons into appindicators
 ido                            -> Widgets and objects used for indicators
 libzeitgeist                   -> Client library to interact with Zeitgeist
+python-rdflib                  -> A language for representing information
 
 BUILD ORDER:
 
