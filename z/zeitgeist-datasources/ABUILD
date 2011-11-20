@@ -1,0 +1,46 @@
+#ABUILD created by/создан: NomerUNO, uno.kms at gmail.com 
+#----------------------------- General vars --------------------------------------
+#------------------------- Основные переменные -----------------------------------
+pkgname=zeitgeist-datasources
+pkgver=0.8.0.1
+pkgbuild=1
+arch=('auto')
+
+shortdesc="Zeitgeist Data-Sources"
+
+source=("http://launchpad.net/${pkgname}/${pkgver%.*.*}/${pkgver%.*}/+download/${pkgname}-${pkgver}.tar.gz")
+
+patch_opts=("")
+
+#----------------------------- AgiliaLinux vars --------------------------------------
+#--------------------- Специфичные для AgiliaLinux ------------------------------
+#short and long tags / длинный и короткий тег
+tags="app-misc unity"
+
+#dependencies only needed to build package
+build_deps="xulrunner"
+
+BUILD_SYSTEM="autotools"
+
+BUILD_WORD="LDFLAGS=\"$SLKLDFLAGS\" CFLAGS=\"$SLKCFLAGS\" CXXFLAGS=\"-std=gnu++0x\" ./configure"
+
+BUILD_KEYS="--prefix=/usr \
+--sysconfdir=/etc \
+--localstatedir=/var \
+--libdir=/usr/lib${LIBDIRSUFFIX} \
+--disable-static \
+--mandir=/usr/man"
+
+INSTALL_KEYS="DESTDIR=$pkgdir"
+
+#ran after function build() 
+#после сборки
+after_build()
+{
+cd ${srcdir}/${pkgname}-${pkgver}
+#Fix Google Chrome directory
+mv "${pkgdir}/usr/share/opt/" "${pkgdir}/"
+#Don't forget Chromium!
+install -d -m755 "${pkgdir}/usr/lib/chromium/resources/"
+ln -s "/opt/google/chrome/resources/zeitgeist_plugin" "${pkgdir}/usr/lib/chromium/resources/"
+}
