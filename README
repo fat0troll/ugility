@@ -26,6 +26,7 @@ libqtgconf                     -> Qt bindings for GConf
 dconf-qt                       -> Qt bindings for DConf
 sni-qt                         -> Turns Qt tray icons into appindicators
 ido                            -> Widgets and objects used for indicators
+libzeitgeist                   -> Client library to interact with Zeitgeist
 
 BUILD ORDER:
 
