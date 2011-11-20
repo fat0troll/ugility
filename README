@@ -23,6 +23,7 @@ libqtbamf                      -> Qt bindings for bamf
 dee                            -> Create Model-View-Controller apps over DBus
 libqtdee                       -> Qt binding and QML plugin for Dee
 libqtgconf                     -> Qt bindings for GConf
+dconf-qt                       -> Qt bindings for DConf
 
 BUILD ORDER:
 

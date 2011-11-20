@@ -1,0 +1,69 @@
+#ABUILD created by/создан: NomerUNO, uno.kms at gmail.com 
+#----------------------------- General vars --------------------------------------
+#------------------------- Основные переменные -----------------------------------
+pkgname=dconf-qt
+_ubuntu_ver=0ubuntu3
+pkgver=0.0.0.110722.${_ubuntu_ver}
+pkgbuild=1
+arch=('auto')
+
+shortdesc="Qt and QML bindings for dconf"
+
+source=("https://launchpad.net/ubuntu/+archive/primary/+files/${pkgname}_${pkgver%.*}.orig.tar.bz2"
+		"http://archive.ubuntu.com/ubuntu/pool/main/d/${pkgname}/${pkgname}_${pkgver%.*}-${_ubuntu_ver}.debian.tar.gz")
+
+patch_opts=("")
+
+#----------------------------- AgiliaLinux vars --------------------------------------
+#--------------------- Специфичные для AgiliaLinux ------------------------------
+#short and long tags / длинный и короткий тег
+tags="gnome-base unity"
+
+#dependencies only needed to build package
+build_deps="cmake"
+
+provides=""
+conflicts=""
+
+adddep=""
+removedep=""
+
+#for multi pkg abuild
+pkglist=
+
+#Set number of jobs while compliling, otherwise it'll be autodetected
+#numjobs=1
+
+#additional files should be copied into ${pkgdir}/usr/doc/${pkgname}-${pkgver} dir from sources
+docs=
+gendeps_blacklist=
+
+#custom_opts: skip_validate skip_gendeps no_postperm no_strip no_ccache
+custom_opts=""
+
+#----------------------------- Make PKG --------------------------------------
+#-------------------------- Сборка пакета ------------------------------------
+
+#ran before function build()
+#запускается перед сборкой.
+before_build()
+{
+cd "${srcdir}/lib${pkgname}-${pkgver%.*.*}"
+
+#Apply Ubuntu patches
+for i in $(cat "${srcdir}/debian/patches/series" | grep -v '#'); do
+  patch -Np1 -i "${srcdir}/debian/patches/${i}"
+done
+}
+
+build() {
+
+cd "${srcdir}/lib${pkgname}-${pkgver%.*.*}"
+burn_patches
+
+cmake . -DCMAKE_INSTALL_PREFIX=/usr -DCMAKE_BUILD_TYPE=RELEASE -DLIB_DIR=lib${LIBDIRSUFFIX} -DLIB_SUFFIX=${LIBDIRSUFFIX}
+make
+make DESTDIR=${pkgdir} install
+
+}
+
