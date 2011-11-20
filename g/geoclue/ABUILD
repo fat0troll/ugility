@@ -1,0 +1,54 @@
+#ABUILD created by/создан: NomerUNO, uno.kms at gmail.com 
+#----------------------------- General vars --------------------------------------
+#------------------------- Основные переменные -----------------------------------
+pkgname=geoclue
+_ubuntu_ver=1ubuntu10
+pkgver=0.12.0.${_ubuntu_ver}
+pkgbuild=1
+arch=('auto')
+
+shortdesc="Modular geoinformation service built on the D-Bus messaging system."
+
+source=("http://archive.ubuntu.com/ubuntu/pool/main/g/${pkgname}/${pkgname}_${pkgver%.*}.orig.tar.gz"
+        "http://archive.ubuntu.com/ubuntu/pool/main/g/${pkgname}/${pkgname}_${pkgver%.*}-${_ubuntu_ver}.debian.tar.gz")
+
+patch_opts=("")
+
+#----------------------------- AgiliaLinux vars --------------------------------------
+#--------------------- Специфичные для AgiliaLinux ------------------------------
+#short and long tags / длинный и короткий тег
+tags="app-misc unity"
+
+#dependencies only needed to build package
+build_deps="gtk-doc autoconf automake"
+
+#----------------------------- Make PKG --------------------------------------
+#-------------------------- Сборка пакета ------------------------------------
+
+#ran before function build()
+#запускается перед сборкой.
+before_build()
+{
+cd "${srcdir}/${pkgname}-${pkgver%.*}"
+
+#Apply Ubuntu patches
+for i in $(cat "${srcdir}/debian/patches/series" | grep -v '#'); do
+  patch -Np1 -i "${srcdir}/debian/patches/${i}"
+done
+}
+
+BUILD_SYSTEM="autotools"
+
+BUILD_WORD="LDFLAGS=\"$SLKLDFLAGS\" CFLAGS=\"$SLKCFLAGS\" CXXFLAGS=\"$SLKCFLAGS\" cd ${srcdir}/${pkgname}-${pkgver%.*} && ./configure"
+
+BUILD_KEYS="--prefix=/usr \
+--sysconfdir=/etc \
+--localstatedir=/var \
+--libdir=/usr/lib${LIBDIRSUFFIX} \
+--disable-static \
+--mandir=/usr/man \
+--enable-gpsd=no \
+--enable-gypsy=no"
+
+INSTALL_KEYS="DESTDIR=$pkgdir"
+

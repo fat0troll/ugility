@@ -30,6 +30,7 @@ libzeitgeist                   -> Client library to interact with Zeitgeist
 python-rdflib                  -> A language for representing information
 zeitgeist-datahub              -> Plugins that insert events into Zeitgeist
 zeitgeist-datasources          -> Data sources for Zeitgeist
+geoclue                        -> Modular geoinformation service
 
 BUILD ORDER:
 
