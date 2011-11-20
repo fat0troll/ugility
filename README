@@ -39,6 +39,7 @@ indicator-application          -> Takes menus and puts then in the panel
 indicator-appmenu              -> An indicator to host the menus from apps
 indicator-datetime             -> A very, very simple clock
 indicator-messages             -> Collects messages that need a response
+indicator-multiload            -> Port of the GNOME multiload applet
 
 BUILD ORDER:
 
