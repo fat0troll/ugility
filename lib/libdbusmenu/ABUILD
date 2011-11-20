@@ -1,0 +1,50 @@
+#ABUILD created by/создан: NomerUNO, uno.kms at gmail.com 
+#----------------------------- General vars --------------------------------------
+#------------------------- Основные переменные -----------------------------------
+pkgname=libdbusmenu
+pkgver=0.5.1
+pkgbuild=1
+arch=('auto')
+
+shortdesc="A small little library that was created by pulling out some comon code out of indicator-applet"
+
+source=("http://launchpad.net/dbusmenu/${pkgver%.*}/${pkgver}/+download/${pkgbase}-${pkgver}.tar.gz")
+
+patch_opts=("")
+
+#----------------------------- AgiliaLinux vars --------------------------------------
+#--------------------- Специфичные для AgiliaLinux ------------------------------
+#short and long tags / длинный и короткий тег
+tags="dev-libs unity"
+
+#dependencies only needed to build package
+build_deps="json-glib>=0.12.6 gtk3-ubuntu intltool gnome-doc-utils gobject-introspection vala python"
+
+#----------------------------- Make PKG --------------------------------------
+#-------------------------- Сборка пакета ------------------------------------
+
+build()
+{
+cd ${srcdir}/${pkgbase}-${pkgver}
+
+burn_patches
+autoreconf -fi
+
+#libdbusmenu-gtk2 won't install if libdbusmenu-glib is missing
+sed -i 's|$(DBUSMENUGTK_CFLAGS)|$(DBUSMENUGTK_CFLAGS) -L../libdbusmenu-glib/.libs|' libdbusmenu-gtk/Makefile.{am,in}
+
+./configure \
+--prefix=/usr \
+--sysconfdir=/etc \
+--localstatedir=/var \
+--libdir=/usr/lib${LIBDIRSUFFIX} \
+--libexecdir=/usr/lib${LIBDIRSUFFIX}/${pkgname} \
+--disable-static \
+--mandir=/usr/man \
+--disable-scrollkeeper \
+--with-gtk=3
+
+make
+make DESTDIR=$pkgdir install
+}
+
