@@ -1,0 +1,41 @@
+#ABUILD created by/создан: NomerUNO, uno.kms at gmail.com 
+#----------------------------- General vars --------------------------------------
+#------------------------- Основные переменные -----------------------------------
+pkgname=libqtdee
+pkgver=0.2.3
+pkgbuild=1
+arch=('auto')
+
+shortdesc="Provides a set of Qt bindings for libdee"
+
+source=("https://launchpad.net/ubuntu/+archive/primary/+files/${pkgname}_${pkgver}.orig.tar.gz")
+
+patch_opts=("")
+
+#----------------------------- AgiliaLinux vars --------------------------------------
+#--------------------- Специфичные для AgiliaLinux ------------------------------
+#short and long tags / длинный и короткий тег
+tags="dev-libs unity"
+
+#dependencies only needed to build package
+build_deps="cmake"
+
+#----------------------------- Make PKG --------------------------------------
+#-------------------------- Сборка пакета ------------------------------------
+
+BUILD_SYSTEM="cmake"
+BUILD_KEYS="-DCMAKE_INSTALL_PREFIX=/usr \
+-DCMAKE_BUILD_TYPE=RELEASE \
+-DLIB_DIR=lib${LIBDIRSUFFIX} \
+-DLIB_SUFFIX=${LIBDIRSUFFIX} \
+../"
+
+#ran after function build() 
+#после сборки
+after_build()
+{
+cd "${srcdir}/${pkgname}-${pkgver}"
+#Install pkgconfig file
+install -d -m755 "${pkgdir}/usr/lib/pkgconfig/"
+install -m644 'libqtdee.pc' "${pkgdir}/usr/lib/pkgconfig/"
+}
