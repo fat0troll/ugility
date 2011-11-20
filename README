@@ -31,6 +31,7 @@ python-rdflib                  -> A language for representing information
 zeitgeist-datahub              -> Plugins that insert events into Zeitgeist
 zeitgeist-datasources          -> Data sources for Zeitgeist
 geoclue                        -> Modular geoinformation service
+python-geoclue                 -> Geoclue Python module
 
 BUILD ORDER:
 
