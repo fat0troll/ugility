@@ -42,6 +42,7 @@ indicator-messages             -> Collects messages that need a response
 indicator-multiload            -> Port of the GNOME multiload applet
 indicator-session              -> Indicator to manage session
 indicator-sound                -> A unified sound menu
+network-manager-applet-ubuntu  -> Network Manager applet with indicator support
 
 BUILD ORDER:
 
