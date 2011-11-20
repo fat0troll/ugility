@@ -1,41 +1,32 @@
 #ABUILD created by/создан: NomerUNO, uno.kms at gmail.com 
 #----------------------------- General vars --------------------------------------
 #------------------------- Основные переменные -----------------------------------
-pkgname=libindicate
-pkgver=0.6.1
+pkgname=bamf
+pkgver=0.2.204
 pkgbuild=1
 arch=('auto')
 
-shortdesc="A small library for applications to raise 'flags' on DBus for other components of the desktop to pick up and visualize"
+shortdesc="Removes the headache of applications matching into a simple DBus daemon and c wrapper library"
 
-source=("http://launchpad.net/${pkgname}/${pkgver%.*}/${pkgver}/+download/${pkgname}-${pkgver}.tar.gz")
+source=("http://launchpad.net/${pkgname}/${pkgver%.*}/${pkgver}/+download/${pkgname}-`echo ${pkgver} | sed -e 's/2.2/2.1/g'`.tar.gz")
 
 patch_opts=("")
 
 #----------------------------- AgiliaLinux vars --------------------------------------
 #--------------------- Специфичные для AgiliaLinux ------------------------------
 #short and long tags / длинный и короткий тег
-tags="dev-libs unity"
+tags="x11-libs unity"
 
 #dependencies only needed to build package
-build_deps="libdbusmenu dbus-glib gtk3-ubuntu gobject-introspection vala gtk-sharp-2 pygtk gnome-doc-utils"
-
-#Set number of jobs while compliling, otherwise it'll be autodetected
-numjobs=1
+build_deps="gobject-introspection libwnck3 gtk3-ubuntu dbus-glib libgtop"
 
 #----------------------------- Make PKG --------------------------------------
 #-------------------------- Сборка пакета ------------------------------------
 
 build()
 {
-cd "${srcdir}/${pkgbase}-${pkgver}"
-
+go_src_dir
 burn_patches
-
-#libindicate-gtk2 won't install if libindicate isn't installed yet
-sed -i 's|$(LIBINDICATEGTK_CFLAGS)|$(LIBINDICATEGTK_CFLAGS) -L../libindicate/.libs|' libindicate-gtk/Makefile.{am,in}
-
-autoreconf -fi
 
 ./configure \
 --prefix=/usr \
@@ -45,9 +36,10 @@ autoreconf -fi
 --libexecdir=/usr/lib${LIBDIRSUFFIX}/${pkgname} \
 --disable-static \
 --mandir=/usr/man \
---with-gtk=3
+--with-gtk=3 \
+--enable-gtk-doc
 
 make
-make DESTDIR=$pkgdir install
+make DESTDIR=${pkgdir} install
 }
 
