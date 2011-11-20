@@ -4,6 +4,23 @@ Here is store for Unity ABUILDs. You can use it without any warranty ;)
 
 Authors: NomerUNO (uno.kms at gmail dot com), fat0troll (fat0troll at riseup dot net), pztrn (pztrn at pztrn dot ru).
 
+ABUILDED PACKAGES:
+
+glib2-ubuntu                   -> glib 2.0 with Ubuntu patches
+inputproto-ubuntu              -> X11 input extension wire protocol
+gtk2-ubuntu                    -> GTK toolkit 2.0 with Ubuntu patches
+gtk3-ubuntu                    -> GTK toolkit 3.0 with Ubuntu patches
+qt-ubuntu                      -> Qt framework with Ubuntu patches
+libdbusmenu                    -> Library for passing menus over DBus
+libindicator                   -> Symbols and functions for indicators
+libindicate                    -> Libraries for apps to raise 'flags' on DBus
+libindicate-qt                 -> Qt bindings for libindicate
+libappindicator                -> Library to export menu bar to Unity
+appmenu-gtk                    -> Application menu module for GTK+
+appmenu-qt                     -> Application menu support for QT
+bamf                           -> Application matching framework
+libqtbamf                      -> Qt bindings for bamf
+
 BUILD ORDER:
 
 01: glib2-ubuntu
