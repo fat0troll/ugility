@@ -25,7 +25,7 @@ autoreconf -fi
 --libdir=/usr/lib${LIBDIRSUFFIX} \
 --disable-static \
 --mandir=/usr/man \
---libexecdir=/usr/lib/${pkgname}
+--libexecdir=/usr/lib${LIBDIRSUFFIX}/${pkgname}
 
 make -j${numjobs}
 make DESTDIR=${pkgdir} install
