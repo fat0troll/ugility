@@ -1,0 +1,53 @@
+#ABUILD created by/создан: NomerUNO, uno.kms at gmail.com 
+#----------------------------- General vars --------------------------------------
+#------------------------- Основные переменные -----------------------------------
+pkgname=dee
+_ubuntu_rel=0ubuntu1
+pkgver=0.5.22.${_ubuntu_rel}
+pkgbuild=1
+arch=('auto')
+
+shortdesc="A library that uses DBus to provide objects allowing you to create Model-View-Controller type programs across DBus"
+
+
+source=("http://launchpad.net/${pkgname}/`echo ${pkgver} | cut -c1-3`/${pkgver}/+download/${pkgname}-${pkgver%.*}.tar.gz"
+		"http://archive.ubuntu.com/ubuntu/pool/main/d/${pkgname}/${pkgname}_${pkgver%.*}-${_ubuntu_rel}.debian.tar.gz")
+
+patch_opts=("")
+
+#----------------------------- AgiliaLinux vars --------------------------------------
+#--------------------- Специфичные для AgiliaLinux ------------------------------
+#short and long tags / длинный и короткий тег
+tags="dev-libs unity"
+
+#dependencies only needed to build package
+build_deps="python gobject-introspection gtk-doc vala"
+
+#----------------------------- Make PKG --------------------------------------
+#-------------------------- Сборка пакета ------------------------------------
+
+#ran before function build()
+#запускается перед сборкой.
+before_build()
+{
+cd ${srcdir}/${pkgname}-${pkgver%.*}
+
+#Apply Ubuntu patches
+for i in $(cat "${srcdir}/debian/patches/series" | grep -v '#'); do
+  patch -Np1 -i "${srcdir}/debian/patches/${i}"
+done
+}
+
+BUILD_SYSTEM="autotools"
+
+BUILD_WORD="LDFLAGS=\"$SLKLDFLAGS\" CFLAGS=\"$SLKCFLAGS\" CXXFLAGS=\"$SLKCFLAGS\" cd ${srcdir}/${pkgname}-${pkgver%.*} && ./configure"
+
+BUILD_KEYS="--prefix=/usr \
+--sysconfdir=/etc \
+--localstatedir=/var \
+--libdir=/usr/lib${LIBDIRSUFFIX} \
+--disable-static \
+--mandir=/usr/man"
+
+INSTALL_KEYS="DESTDIR=$pkgdir"
+
