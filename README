@@ -20,6 +20,7 @@ appmenu-gtk                    -> Application menu module for GTK+
 appmenu-qt                     -> Application menu support for QT
 bamf                           -> Application matching framework
 libqtbamf                      -> Qt bindings for bamf
+dee                            -> Create Model-View-Controller apps over DBus
 
 BUILD ORDER:
 
