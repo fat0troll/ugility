@@ -1,0 +1,33 @@
+#ABUILD created by/создан: NomerUNO, uno.kms at gmail.com 
+#----------------------------- General vars --------------------------------------
+#------------------------- Основные переменные -----------------------------------
+pkgname=indicator-applet
+pkgver=0.4.12
+pkgbuild=1
+arch=('auto')
+
+shortdesc="A small applet to display information from various applications consistently in the panel"
+source=("http://launchpad.net/${pkgname}/${pkgver%.*}/${pkgver}/+download/${pkgname}-${pkgver}.tar.gz")
+patch_opts=("")
+tags="gnome-extra unity"
+build_deps="intltool"
+numjobs=1
+
+build()
+{
+go_src_dir
+burn_patches
+
+autoreconf -fi
+./configure --prefix=/usr \
+--sysconfdir=/etc \
+--localstatedir=/var \
+--libdir=/usr/lib${LIBDIRSUFFIX} \
+--disable-static \
+--mandir=/usr/man \
+--libexecdir=/usr/lib/${pkgname}
+
+make -j${numjobs}
+make DESTDIR=${pkgdir} install
+}
+

@@ -34,6 +34,7 @@ geoclue                        -> Modular geoinformation service
 python-geoclue                 -> Geoclue Python module
 python-xapian                  -> Python bindings for Xapian
 zeitgeist-extensions           -> Extensions for Zeitgeist
+indicator-applet               -> GNOME panel indicator applet
 
 BUILD ORDER:
 
