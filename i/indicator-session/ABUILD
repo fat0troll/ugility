@@ -1,0 +1,26 @@
+#ABUILD created by/создан: NomerUNO, uno.kms at gmail.com 
+#----------------------------- General vars --------------------------------------
+#------------------------- Основные переменные -----------------------------------
+pkgname=indicator-session
+pkgver=0.3.7.1
+pkgbuild=1
+arch=('auto')
+
+shortdesc="Indicator showing session management, status and user switching"
+source=("http://launchpad.net/${pkgname}/${pkgver%.*.*}/${pkgver}/+download/${pkgname}-${pkgver}.tar.gz")
+patch_opts=("")
+tags="x11-misc unity"
+
+BUILD_SYSTEM="autotools"
+BUILD_WORD="LDFLAGS=\"$SLKLDFLAGS\" CFLAGS=\"$SLKCFLAGS\" CXXFLAGS=\"$SLKCFLAGS\" ./configure"
+BUILD_KEYS="--prefix=/usr \
+--sysconfdir=/etc \
+--localstatedir=/var \
+--libdir=/usr/lib${LIBDIRSUFFIX} \
+--disable-static \
+--mandir=/usr/man \
+--libexecdir=/usr/lib${LIBDIRSUFFIX}/${pkgname} \
+--disable-schemas-compile \
+--with-gtk=3"
+INSTALL_KEYS="DESTDIR=$pkgdir"
+
