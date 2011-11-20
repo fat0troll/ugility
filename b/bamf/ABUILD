@@ -18,7 +18,7 @@ patch_opts=("")
 tags="x11-libs unity"
 
 #dependencies only needed to build package
-build_deps="gobject-introspection libwnck3 gtk3-ubuntu dbus-glib libgtop"
+build_deps="gobject-introspection libwnck3"
 
 #----------------------------- Make PKG --------------------------------------
 #-------------------------- Сборка пакета ------------------------------------
