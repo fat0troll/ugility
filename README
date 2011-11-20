@@ -33,6 +33,7 @@ zeitgeist-datasources          -> Data sources for Zeitgeist
 geoclue                        -> Modular geoinformation service
 python-geoclue                 -> Geoclue Python module
 python-xapian                  -> Python bindings for Xapian
+zeitgeist-extensions           -> Extensions for Zeitgeist
 
 BUILD ORDER:
 
