@@ -15,7 +15,7 @@ patch_opts=("")
 #----------------------------- AgiliaLinux vars --------------------------------------
 #--------------------- Специфичные для AgiliaLinux ------------------------------
 #short and long tags / длинный и короткий тег
-tags=""
+tags="x11-unity unity"
 
 #dependencies only needed to build package
 build_deps="cmake"
