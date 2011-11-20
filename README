@@ -45,6 +45,7 @@ indicator-sound                -> A unified sound menu
 network-manager-applet-ubuntu  -> Network Manager applet with indicator support
 gnome-bluetooth-ubuntu         -> Gnome bluetooth applet with indicator support
 nux                            -> An OpenGL toolkit
+xinput-ubuntu                  -> Command line tool to configure input devices
 
 BUILD ORDER:
 

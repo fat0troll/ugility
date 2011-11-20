@@ -1,0 +1,38 @@
+pkgname=xinput-ubuntu
+_ubuntu_ver=2ubuntu1
+pkgver=1.5.3.${_ubuntu_ver}
+pkgbuild=1
+arch=('auto')
+provides="xinput"
+
+shortdesc=('xinput is a utility to configure and test XInput devices')
+tags=('x11-apps unity')
+
+source=("http://xorg.freedesktop.org/archive/individual/app/${pkgname%-*}-${pkgver%.*}.tar.bz2"
+        "http://archive.ubuntu.com/ubuntu/pool/main/x/${pkgname%-*}/${pkgname%-*}_${pkgver%.*}-${_ubuntu_ver}.debian.tar.gz)
+
+build_deps='glibc-solibs libxcb libX11 libXau libXdmcp libXext libXi x11-skel inputproto-ubuntu'
+
+before_build()
+{
+cd "${srcdir}/${pkgname%-*}-${pkgver%.*}"
+
+#Apply Ubuntu patches
+for i in $(cat "${srcdir}/debian/patches/series" | grep -v '#'); do
+  patch -Np1 -i "${srcdir}/debian/patches/${i}"
+done
+}
+
+BUILD_SYSTEM='autotools'
+BUILD_WORD="LDFLAGS=\"$SLKLDFLAGS\" CFLAGS=\"$SLKCFLAGS\" CXXFLAGS=\"$SLKCFLAGS\" cd ${srcdir}/${pkgname%-*}-${pkgver%.*} && ./configure"
+BUILD_KEYS="--prefix=/usr \
+--libdir=/usr/lib${LIBDIRSUFFIX} \
+--sysconfdir=/etc \
+--localstatedir=/var \
+--infodir=/usr/info \
+--mandir=/usr/man \
+--disable-static \
+--with-fontrootdir=/usr/share/fonts \
+--build=$ARCH-slackware-linux"
+INSTALL_KEYS="DESTDIR=$pkgdir"
+
