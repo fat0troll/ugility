@@ -36,6 +36,7 @@ python-xapian                  -> Python bindings for Xapian
 zeitgeist-extensions           -> Extensions for Zeitgeist
 indicator-applet               -> GNOME panel indicator applet
 indicator-application          -> Takes menus and puts then in the panel
+indicator-appmenu              -> An indicator to host the menus from apps
 
 BUILD ORDER:
 
