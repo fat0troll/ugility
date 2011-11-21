@@ -3,7 +3,7 @@
 #------------------------- Основные переменные -----------------------------------
 pkgname=libindicate
 pkgver=0.6.1
-pkgbuild=1
+pkgbuild=2
 arch=('auto')
 
 shortdesc="A small library for applications to raise 'flags' on DBus for other components of the desktop to pick up and visualize"
@@ -18,7 +18,7 @@ patch_opts=("")
 tags="dev-libs unity"
 
 #dependencies only needed to build package
-build_deps="libdbusmenu dbus-glib gtk3-ubuntu gobject-introspection vala gtk-sharp-2 pygtk gnome-doc-utils"
+build_deps="libdbusmenu dbus-glib gtk+3 gobject-introspection vala pygtk gnome-doc-utils"
 
 #Set number of jobs while compliling, otherwise it'll be autodetected
 numjobs=1
@@ -28,7 +28,7 @@ numjobs=1
 
 build()
 {
-cd "${srcdir}/${pkgbase}-${pkgver}"
+cd "${srcdir}/${pkgname}-${pkgver}"
 
 burn_patches
 
@@ -36,6 +36,8 @@ burn_patches
 sed -i 's|$(LIBINDICATEGTK_CFLAGS)|$(LIBINDICATEGTK_CFLAGS) -L../libindicate/.libs|' libindicate-gtk/Makefile.{am,in}
 
 autoreconf -fi
+# Configure was hardcoded to link to Python 2.6
+sed -i 's/-lpyglib-2\.0-python\$PYTHON_VERSION/-lpyglib-2\.0-python/' configure
 
 ./configure \
 --prefix=/usr \
@@ -47,7 +49,8 @@ autoreconf -fi
 --mandir=/usr/man \
 --with-gtk=3
 
-make
+  
+make -j${numjobs}
 make DESTDIR=$pkgdir install
 }
 

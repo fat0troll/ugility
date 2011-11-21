@@ -8,7 +8,7 @@ arch=('auto')
 
 shortdesc="A small little library that was created by pulling out some comon code out of indicator-applet"
 
-source=("http://launchpad.net/dbusmenu/${pkgver%.*}/${pkgver}/+download/${pkgbase}-${pkgver}.tar.gz")
+source=("http://launchpad.net/dbusmenu/${pkgver%.*}/${pkgver}/+download/${pkgname}-${pkgver}.tar.gz")
 
 patch_opts=("")
 
@@ -18,14 +18,14 @@ patch_opts=("")
 tags="dev-libs unity"
 
 #dependencies only needed to build package
-build_deps="json-glib>=0.12.6 gtk3-ubuntu intltool gnome-doc-utils gobject-introspection vala python"
+build_deps="json-glib>=0.12.6 gtk+3 intltool gnome-doc-utils gobject-introspection vala python"
 
 #----------------------------- Make PKG --------------------------------------
 #-------------------------- Сборка пакета ------------------------------------
 
 build()
 {
-cd ${srcdir}/${pkgbase}-${pkgver}
+cd ${srcdir}/${pkgname}-${pkgver}
 
 burn_patches
 autoreconf -fi
